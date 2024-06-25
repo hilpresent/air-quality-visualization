@@ -23,7 +23,7 @@ An interactive visualization of global air quality using D3.js. This project all
 2. Open `index.html` in your web browser to view the visualization.
 
 ## Data Source:
-- Air quality data sourced from OpenAQ
+- Air quality data sourced from [OpenAQ](https://openaq.org)
 
 ## License:
 - This project is licensed under the MIT License
