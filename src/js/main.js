@@ -49,7 +49,7 @@ function aggregateData(airQualityData) {
         pollutants.forEach((pollutantValues, pollutant) => {
             const avgValue = d3.mean(pollutantValues, d => +d.Value);
             countryData[pollutant] = {
-                avgValue: avgValue,
+                avgValue: avgValue.toFixed(2),
                 unit: pollutantValues[0].Unit
             };
         });
@@ -208,10 +208,18 @@ function visualizeData(geojsonData, aggregatedData, selectedPollutant) {
         //     .remove();
 
     // add a color bar
-    addColorBar(colorScale, maxValue);
+    let unit = "";
+    for (let [country, data] of aggregatedData) {
+        if (data[selectedPollutant]) {
+            unit = data[selectedPollutant].unit;
+            break;
+        }
+    }
+
+    addColorBar(colorScale, maxValue, selectedPollutant, unit);
 }
 
-function addColorBar(colorScale, maxValue) {
+function addColorBar(colorScale, maxValue, selectedPollutant, unit) {
     // remove existing color bar
     d3.select("#color-bar").remove();
 
@@ -254,5 +262,12 @@ function addColorBar(colorScale, maxValue) {
     colorBar.append("g")
         .attr("class", "y axis")
         .attr("transform", `translate(${colorBarWidth}, 0)`)
-        .call(yAxis);
+        .call(yAxis)
+
+    colorBar.append("text")
+        .attr("x", colorBarWidth / 2)
+        .attr("y", -10) 
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text(unit);
 }
